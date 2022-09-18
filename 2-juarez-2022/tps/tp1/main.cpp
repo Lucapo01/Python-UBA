@@ -313,12 +313,59 @@ void most_read_genre(Book *books, int last)
             }
         }
     }
-    cout << "You most read genres are: " << endl;
+    cout << "Your most read genres are: " << endl;
     for (int j = 0; j < GENRES_QTY; j++)
     {
         if (genres_read[j] == max_read_genre_qty)
         {
             cout << GENRES[j] << endl;
+        }
+    }
+}
+void fav_genre(Book *books, int last)
+{
+    int genres_read[GENRES_QTY];
+    int genres_rate_total[GENRES_QTY];
+    float average[GENRES_QTY];
+    float max_average = 0.0;
+
+    // init to 0
+    for (int j = 0; j < GENRES_QTY; j++)
+    {
+        genres_read[j] = 0;
+        genres_rate_total[j] = 0;
+    }
+
+    // sum all the rates of a genre in genres_rate_total and add 1 by 1 the genres you read
+    for (int i = 0; i < last; i++)
+    {
+        for (int j = 0; j < GENRES_QTY; j++)
+        {
+            if (books[i].genre == GENRES_LETTERS[j])
+            {
+                genres_rate_total[j] += books[i].rate;
+                genres_read[j]++;
+            }
+        }
+    }
+
+    // average = total / quantity of genre read
+    for (int j = 0; j < GENRES_QTY; j++)
+    {
+        average[j] = (float)genres_rate_total[j] / (float)genres_read[j];
+        if (average[j] > max_average)
+        {
+            max_average = average[j];
+        }
+    }
+
+    // print the max average genre
+    cout << "Your favorite genres are: " << endl;
+    for (int j = 0; j < GENRES_QTY; j++)
+    {
+        if (average[j] == max_average)
+        {
+            cout << GENRES[j] << " - avg: " << average[j] << endl;
         }
     }
 }
@@ -339,7 +386,8 @@ int main()
     // edit_rate(books, last);
     // fav_book(books, last);
     // min_rate(books, last);
-    most_read_genre(books, last);
+    // most_read_genre(books, last);
+    fav_genre(books, last);
 
     // cout << "Size: " << size << endl;
 
